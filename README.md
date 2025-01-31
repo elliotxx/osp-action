@@ -31,7 +31,7 @@ on:
     types: [opened, edited, deleted, transferred, milestoned, demilestoned, labeled, unlabeled, assigned, unassigned]
 
 jobs:
-  osp-management:
+  osp-run:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

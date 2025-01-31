@@ -38,7 +38,6 @@ runs:
       uses: actions/setup-go@v4
       with:
         go-version: '1.22'
-      shell: bash
 
     - name: Setup OSP cache
       if: inputs.skip-cache != 'true'
@@ -49,32 +48,33 @@ runs:
         key: ${{ runner.os }}-osp-${{ github.sha }}
         restore-keys: |
           ${{ runner.os }}-osp-
-      shell: bash
 
     - name: Install OSP
-      run: |
-        if [ "${{ inputs.version }}" = "latest" ]; then
-          go install github.com/elliotxx/osp@latest
-        else
-          go install github.com/elliotxx/osp@${{ inputs.version }}
-        fi
-      shell: bash
+      run:
+        shell: bash
+        command: |
+          if [ "${{ inputs.version }}" = "latest" ]; then
+            go install github.com/elliotxx/osp@latest
+          else
+            go install github.com/elliotxx/osp@${{ inputs.version }}
+          fi
 
     - name: Run OSP
-      run: |
-        cd ${{ inputs.working-directory || '.' }}
-        
-        # Check current repo
-        osp repo current
+      run:
+        shell: bash
+        command: |
+          cd ${{ inputs.working-directory || '.' }}
+          
+          # Check current repo
+          osp repo current
 
-        # Check authentication status
-        osp auth status
-        
-        # Run command with additional arguments
-        if [ -n "${{ inputs.args }}" ]; then
-          osp ${{ inputs.args }}
-        fi
-      shell: bash
+          # Check authentication status
+          osp auth status
+          
+          # Run command with additional arguments
+          if [ -n "${{ inputs.args }}" ]; then
+            osp ${{ inputs.args }}
+          fi
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
 
