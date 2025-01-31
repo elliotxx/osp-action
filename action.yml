@@ -62,6 +62,9 @@ runs:
       run: |
         cd ${{ inputs.working-directory || '.' }}
         
+        # Check osp version
+        osp --version
+
         # Check current repo
         osp repo current
 
