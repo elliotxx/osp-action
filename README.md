@@ -62,7 +62,23 @@ jobs:
 | `working-directory` | Working directory for OSP commands | No | Project root |
 | `github-token` | GitHub token for authentication | No | `${{ github.token }}` |
 | `skip-cache` | Skip all caching functionality | No | `false` |
+| `debug` | Enable debug mode for verbose output | No | `false` |
 | `args` | Additional OSP command line arguments | No | `""` |
+
+## Example usage with debug mode
+
+```yaml
+- name: Run OSP with debug
+  uses: elliotxx/osp-action@main
+  with:
+    debug: true
+    args: 'plan --yes'
+```
+
+This will show verbose output including:
+- Authentication status and token source
+- API calls and responses
+- Command execution details
 
 ## Features
 

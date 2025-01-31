@@ -26,6 +26,13 @@ inputs:
     default: 'false'
     required: false
 
+  debug:
+    description: |
+      Enable debug mode to show verbose output.
+      This will help diagnose issues with authentication and execution.
+    required: false
+    default: 'false'
+
   args:
     description: "Additional OSP command line arguments"
     default: ""
@@ -72,11 +79,19 @@ runs:
         osp repo current
 
         # Check authentication status
-        osp auth status
+        if [ "${{ inputs.debug }}" = "true" ]; then
+          osp -v auth status
+        else
+          osp auth status
+        fi
         
         # Run command with additional arguments
         if [ -n "${{ inputs.args }}" ]; then
-          osp ${{ inputs.args }}
+          if [ "${{ inputs.debug }}" = "true" ]; then
+            osp -v ${{ inputs.args }}
+          else
+            osp ${{ inputs.args }}
+          fi
         fi
       shell: bash
       env:
