@@ -1,0 +1,34 @@
+name: 'OSP Action'
+description: 'GitHub Action for OSP (Open Source Planning)'
+author: 'elliotxx'
+
+inputs:
+  github-token:
+    description: 'GitHub token'
+    required: true
+  plan-file:
+    description: 'Path to the plan file'
+    required: true
+    default: '.github/planning.yml'
+
+runs:
+  using: 'composite'
+  steps:
+    - name: Set up Go
+      uses: actions/setup-go@v4
+      with:
+        go-version: '1.21'
+      shell: bash
+
+    - name: Install OSP
+      run: |
+        go install github.com/elliotxx/osp@latest
+      shell: bash
+
+    - name: Run OSP
+      run: |
+        osp auth login --token ${{ inputs.github-token }}
+        osp plan update --file ${{ inputs.plan-file }}
+      shell: bash
+      env:
+        GITHUB_TOKEN: ${{ inputs.github-token }}
