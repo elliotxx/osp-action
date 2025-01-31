@@ -47,6 +47,9 @@ jobs:
           # Optional: GitHub token (default: ${{ github.token }})
           github-token: ${{ secrets.GITHUB_TOKEN }}
           
+          # Optional: enable debug mode (default: false)
+          debug: false
+          
           # Optional: skip caching (default: false)
           skip-cache: false
           
