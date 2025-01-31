@@ -50,31 +50,29 @@ runs:
           ${{ runner.os }}-osp-
 
     - name: Install OSP
-      run:
-        shell: bash
-        command: |
-          if [ "${{ inputs.version }}" = "latest" ]; then
-            go install github.com/elliotxx/osp@latest
-          else
-            go install github.com/elliotxx/osp@${{ inputs.version }}
-          fi
+      run: |
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          go install github.com/elliotxx/osp@latest
+        else
+          go install github.com/elliotxx/osp@${{ inputs.version }}
+        fi
+      shell: bash
 
     - name: Run OSP
-      run:
-        shell: bash
-        command: |
-          cd ${{ inputs.working-directory || '.' }}
-          
-          # Check current repo
-          osp repo current
+      run: |
+        cd ${{ inputs.working-directory || '.' }}
+        
+        # Check current repo
+        osp repo current
 
-          # Check authentication status
-          osp auth status
-          
-          # Run command with additional arguments
-          if [ -n "${{ inputs.args }}" ]; then
-            osp ${{ inputs.args }}
-          fi
+        # Check authentication status
+        osp auth status
+        
+        # Run command with additional arguments
+        if [ -n "${{ inputs.args }}" ]; then
+          osp ${{ inputs.args }}
+        fi
+      shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
 
