@@ -69,9 +69,6 @@ runs:
       run: |
         cd ${{ inputs.working-directory || '.' }}
         
-        # Debug: Check GITHUB_TOKEN
-        echo "GITHUB_TOKEN: $GITHUB_TOKEN"
-        
         # Check osp version
         osp --version
 
@@ -95,7 +92,7 @@ runs:
         fi
       shell: bash
       env:
-        GITHUB_TOKEN: ${{ github.token }}
+        GITHUB_TOKEN: ${{ inputs.github-token }}
 
 branding:
   icon: 'calendar'
