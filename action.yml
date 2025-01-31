@@ -1,15 +1,35 @@
 name: 'OSP Action'
-description: 'GitHub Action for OSP (Open Source Planning)'
+description: 'GitHub Action for OSP (Open Source Software Pilot) - Streamline your open source project management in CI/CD pipelines.'
 author: 'elliotxx'
 
 inputs:
+  version:
+    description: |
+      The version of OSP to use.
+      Can be v1.2.3 or 'latest' to use the latest version.
+    required: false
+    default: 'latest'
+  
+  working-directory:
+    description: "OSP working directory, default is project root"
+    required: false
+    
   github-token:
-    description: 'GitHub token'
-    required: true
-  plan-file:
-    description: 'Path to the plan file'
-    required: true
-    default: '.github/planning.yml'
+    description: "GitHub token for authentication and API access"
+    default: ${{ github.token }}
+    required: false
+
+  skip-cache:
+    description: |
+      If set to true then all caching functionality will be completely disabled,
+      takes precedence over all other caching options.
+    default: 'false'
+    required: false
+
+  args:
+    description: "Additional OSP command line arguments"
+    default: ""
+    required: false
 
 runs:
   using: 'composite'
@@ -17,18 +37,47 @@ runs:
     - name: Set up Go
       uses: actions/setup-go@v4
       with:
-        go-version: '1.21'
+        go-version: '1.22'
+      shell: bash
+
+    - name: Setup OSP cache
+      if: inputs.skip-cache != 'true'
+      uses: actions/cache@v3
+      with:
+        path: |
+          ~/.cache/osp
+        key: ${{ runner.os }}-osp-${{ github.sha }}
+        restore-keys: |
+          ${{ runner.os }}-osp-
       shell: bash
 
     - name: Install OSP
       run: |
-        go install github.com/elliotxx/osp@latest
+        if [ "${{ inputs.version }}" = "latest" ]; then
+          go install github.com/elliotxx/osp@latest
+        else
+          go install github.com/elliotxx/osp@${{ inputs.version }}
+        fi
       shell: bash
 
     - name: Run OSP
       run: |
-        osp auth login --token ${{ inputs.github-token }}
-        osp plan update --file ${{ inputs.plan-file }}
+        cd ${{ inputs.working-directory || '.' }}
+        
+        # Check current repo
+        osp repo current
+
+        # Check authentication status
+        osp auth status
+        
+        # Run command with additional arguments
+        if [ -n "${{ inputs.args }}" ]; then
+          osp ${{ inputs.args }}
+        fi
       shell: bash
       env:
         GITHUB_TOKEN: ${{ inputs.github-token }}
+
+branding:
+  icon: 'calendar'
+  color: 'blue'

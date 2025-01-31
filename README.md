@@ -1,54 +1,77 @@
 # OSP Action
 
-GitHub Action for OSP (Open Source Planning)
+GitHub Action for OSP (Open Source Software Pilot) - Streamline your open source project management in CI/CD pipelines.
 
 ## What is OSP?
 
-OSP (Open Source Planning) is a command-line tool that helps you manage your open source planning. It can:
-- Automatically update your planning file based on GitHub issues and pull requests
-- Track progress of your planning
-- Generate reports and statistics
+OSP (Open Source Software Pilot) is a command-line tool designed to improve the efficiency of open source project management. It provides various features to help you:
+
+- Generate and update community planning based on milestone issues
+- Track project statistics and star history
+- Handle authentication and tokens
+- And more...
+
+By integrating OSP into your CI/CD pipeline through this GitHub Action, you can automate various project management tasks and improve your workflow efficiency.
 
 ## Usage
 
+## Community Planning Updater
+
+The following example demonstrates how to use `elliotxx/osp-action` to track milestones and issues in your repository. This workflow triggers on milestone and issue events, allowing you to automate updates and planning based on changes to these elements.
+
 ```yaml
-name: Update Planning
+name: Community Planning Updater
 
 on:
-  schedule:
-    - cron: '0 0 * * *'  # Run daily at midnight
-  workflow_dispatch:      # Allow manual trigger
+  # Trigger on milestone events
+  milestone:
+    types: [created, edited, deleted]
+  # Trigger on issue events
+  issues:
+    types: [opened, edited, deleted, transferred, milestoned, demilestoned, labeled, unlabeled, assigned, unassigned]
 
 jobs:
-  update-planning:
+  osp-management:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      
-      - name: Update Planning
+      - name: Generate Milestone Planning
         uses: elliotxx/osp-action@main
         with:
+          # Optional: version of OSP to use (default: latest)
+          version: 'latest'
+          
+          # Optional: working directory (default: project root)
+          working-directory: '.'
+          
+          # Optional: GitHub token (default: ${{ github.token }})
           github-token: ${{ secrets.GITHUB_TOKEN }}
-          plan-file: '.github/planning.yml'  # Optional, default is '.github/planning.yml'
-
-      - name: Create Pull Request
-        uses: peter-evans/create-pull-request@v5
-        with:
-          commit-message: 'chore: update planning [skip ci]'
-          title: 'chore: update planning'
-          body: |
-            Update planning file based on GitHub issues and pull requests.
-            This is an automated pull request.
-          branch: update-planning
-          delete-branch: true
+          
+          # Optional: skip caching (default: false)
+          skip-cache: false
+          
+          # Optional: additional OSP arguments
+          args: 'plan --yes --categories bug,documentation,enhancement'
 ```
 
 ## Inputs
 
 | Name | Description | Required | Default |
 |------|-------------|----------|---------|
-| `github-token` | GitHub token | Yes | N/A |
-| `plan-file` | Path to the plan file | No | `.github/planning.yml` |
+| `version` | Version of OSP to use (v1.2.3 or 'latest') | No | `latest` |
+| `working-directory` | Working directory for OSP commands | No | Project root |
+| `github-token` | GitHub token for authentication | No | `${{ github.token }}` |
+| `skip-cache` | Skip all caching functionality | No | `false` |
+| `args` | Additional OSP command line arguments | No | `""` |
+
+## Features
+
+- **CI/CD Integration**: Seamlessly integrate OSP into your GitHub Actions workflow
+- **Version Management**: Specify any version of OSP to use
+- **Performance**: Built-in caching for faster execution
+- **Flexible**: Supports all OSP command line arguments
+- **Secure**: Uses GitHub token for authentication
+- **Customizable**: Configure working directory and more
 
 ## License
 
