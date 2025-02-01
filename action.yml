@@ -83,14 +83,18 @@ runs:
         fi
         
         # Run command with additional arguments
-        ARGS='${{ inputs.args }}'
-        DEBUG='${{ inputs.debug }}'
-        if [ ! -z "$ARGS" ]; then
-          if [ "$DEBUG" = "true" ]; then
-            sh -c "osp -v $ARGS"
+        if [ ! -z "${{ inputs.args }}" ]; then
+          # Save command to a temporary script
+          echo '#!/bin/bash' > run_osp.sh
+          if [ "${{ inputs.debug }}" = "true" ]; then
+            echo "osp -v ${{ inputs.args }}" >> run_osp.sh
           else
-            sh -c "osp $ARGS"
+            echo "osp ${{ inputs.args }}" >> run_osp.sh
           fi
+          # Make it executable and run it
+          chmod +x run_osp.sh
+          ./run_osp.sh
+          rm run_osp.sh
         fi
       shell: bash
       env:
