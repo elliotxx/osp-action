@@ -83,11 +83,13 @@ runs:
         fi
         
         # Run command with additional arguments
-        if [ -n "${{ inputs.args }}" ]; then
-          if [ "${{ inputs.debug }}" = "true" ]; then
-            eval "osp -v ${{ inputs.args }}"
+        ARGS='${{ inputs.args }}'
+        DEBUG='${{ inputs.debug }}'
+        if [ ! -z "$ARGS" ]; then
+          if [ "$DEBUG" = "true" ]; then
+            osp -v $ARGS
           else
-            eval "osp ${{ inputs.args }}"
+            osp $ARGS
           fi
         fi
       shell: bash
