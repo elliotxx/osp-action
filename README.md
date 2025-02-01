@@ -54,7 +54,10 @@ jobs:
           skip-cache: false
           
           # Optional: additional OSP arguments
-          args: 'plan --yes --category-labels bug,documentation,enhancement'
+          args: >-
+            plan
+            --yes
+            --category-labels bug,documentation,enhancement
 ```
 
 ## Community Task Updater
@@ -93,7 +96,12 @@ jobs:
           skip-cache: false
           
           # Optional: additional OSP arguments
-          args: 'onboard --yes --onboard-labels "help wanted,good first issue" --difficulty-labels "difficulty/easy,difficulty/medium,difficulty/hard" --category-labels "bug,documentation,enhancement"'
+          args: >-
+            onboard
+            --yes
+            --onboard-labels 'help wanted,good first issue'
+            --difficulty-labels 'difficulty/easy,difficulty/medium,difficulty/hard'
+            --category-labels 'bug,documentation,enhancement'
 ```
 
 ## Inputs
