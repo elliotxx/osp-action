@@ -87,9 +87,9 @@ runs:
         DEBUG='${{ inputs.debug }}'
         if [ ! -z "$ARGS" ]; then
           if [ "$DEBUG" = "true" ]; then
-            osp -v $ARGS
+            sh -c "osp -v $ARGS"
           else
-            osp $ARGS
+            sh -c "osp $ARGS"
           fi
         fi
       shell: bash
