@@ -54,7 +54,7 @@ jobs:
           skip-cache: false
           
           # Optional: additional OSP arguments
-          args: 'plan --yes --categories bug,documentation,enhancement'
+          args: 'plan --yes --category-labels bug,documentation,enhancement'
 ```
 
 ## Community Task Updater
