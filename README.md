@@ -57,6 +57,45 @@ jobs:
           args: 'plan --yes --categories bug,documentation,enhancement'
 ```
 
+## Community Task Updater
+
+The following example demonstrates how to use `elliotxx/osp-action` to manage community tasks in your repository. This workflow triggers on issue and pull request events, allowing you to automatically organize and categorize tasks for new contributors.
+
+```yaml
+name: Community Task Updater
+
+on:
+  # Trigger on issue events
+  issues:
+    types: [opened, edited, deleted, transferred, milestoned, demilestoned, labeled, unlabeled, assigned, unassigned]
+
+jobs:
+  osp-run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Update Community Tasks
+        uses: elliotxx/osp-action@main
+        with:
+          # Optional: version of OSP to use (default: latest)
+          version: 'latest'
+          
+          # Optional: working directory (default: project root)
+          working-directory: '.'
+          
+          # Optional: GitHub token (default: ${{ github.token }})
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          
+          # Optional: enable debug mode (default: false)
+          debug: false
+          
+          # Optional: skip caching (default: false)
+          skip-cache: false
+          
+          # Optional: additional OSP arguments
+          args: 'onboard --yes --onboard-labels "help wanted,good first issue" --difficulty-labels "difficulty/easy,difficulty/medium,difficulty/hard" --category-labels "bug,documentation,enhancement"'
+```
+
 ## Inputs
 
 | Name | Description | Required | Default |
