@@ -93,7 +93,7 @@ runs:
           fi
           # Make it executable and run it
           chmod +x run_osp.sh
-          ./run_osp.sh
+          env GITHUB_TOKEN="$GITHUB_TOKEN" ./run_osp.sh
           rm run_osp.sh
         fi
       shell: bash
