@@ -68,17 +68,18 @@ runs:
     - name: Run OSP
       run: |
         cd ${{ inputs.working-directory || '.' }}
-        
+
         # Check osp version
         osp --version
 
-        # Check current repo
-        osp repo current
-
         # Check authentication status
         if [ "${{ inputs.debug }}" = "true" ]; then
+          osp -v repo current
+          osp -v config list
           osp -v auth status
         else
+          osp repo current
+          osp config list
           osp auth status
         fi
         
