@@ -1,3 +1,5 @@
+![osp-action](https://socialify.git.ci/elliotxx/osp-action/image?font=Raleway&language=1&name=1&owner=1&pattern=Plus&theme=Light)
+
 # OSP Action
 
 GitHub Action for OSP (Open Source Software Pilot) - Streamline your open source project management in CI/CD pipelines.
@@ -23,6 +25,8 @@ The following example demonstrates how to use `elliotxx/osp-action` to track mil
 name: Community Planning Updater
 
 on:
+  # Manually triggered
+  workflow_dispatch:
   # Trigger on milestone events
   milestone:
     types: [created, edited, deleted]
@@ -68,6 +72,8 @@ The following example demonstrates how to use `elliotxx/osp-action` to manage co
 name: Community Task Updater
 
 on:
+  # Manually triggered
+  workflow_dispatch:
   # Trigger on issue events
   issues:
     types: [opened, edited, deleted, transferred, milestoned, demilestoned, labeled, unlabeled, assigned, unassigned]
