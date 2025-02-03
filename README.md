@@ -2,11 +2,11 @@
 
 # OSP Action
 
-GitHub Action for OSP (Open Source Software Pilot) - Streamline your open source project management in CI/CD pipelines.
+GitHub Action for [OSP (Open Source Software Pilot)](https://github.com/elliotxx/osp) - Streamline your open source project management in CI/CD pipelines.
 
 ## What is OSP?
 
-OSP (Open Source Software Pilot) is a command-line tool designed to improve the efficiency of open source project management. It provides various features to help you:
+[OSP (Open Source Software Pilot)](https://github.com/elliotxx/osp) is a command-line tool designed to improve the efficiency of open source project management. It provides various features to help you:
 
 - Generate and update community planning based on milestone issues
 - Track project statistics and star history
